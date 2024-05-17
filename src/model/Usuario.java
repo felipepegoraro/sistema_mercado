@@ -5,25 +5,29 @@ public class Usuario {
     private String name;
     private String email;
     private String password;
+    private CarrinhoDeCompra carrinho;
     
     public Usuario(){
         this.id = -1;
         this.name = "";
         this.email = "";
         this.password = "";
+        this.carrinho = null;
     }
 
-    public Usuario(int id, String n, String email, String pswd){
+    public Usuario(int id, String name, String email, String passwd){
         this.id = id;
-        this.name = n;
+        this.name = name;
         this.email = email;
-        this.password = pswd;
+        this.password = passwd;
+        this.carrinho = new CarrinhoDeCompra();
     }
     
-    public Usuario(String n, String email, String pswd){
-        this.name = n;
+    public Usuario(String name, String email, String passwd){
+        this.name = name;
         this.email = email;
-        this.password = pswd;
+        this.password = passwd;
+        this.carrinho = new CarrinhoDeCompra();
     }
 
     public int getId() {

@@ -16,8 +16,6 @@ public class LoginView extends javax.swing.JPanel {
         setVisible(true);
         
         initComponents();
-
-        System.out.println("ok");
     }
     
     private boolean isLoginValid(){
