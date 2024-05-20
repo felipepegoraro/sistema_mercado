@@ -1,18 +1,18 @@
 package view;
 
-import java.util.ArrayList;
 import java.util.List;
 import controller.ProdutoDAO;
+import java.awt.GridLayout;
 import model.Produto;
 import javax.swing.*;
 
-public class TelaUsuarioInicial extends javax.swing.JFrame {
+public class TelaUsuarioInicial extends JFrame {
     private static src.Main mainFrame;
-    private DefaultListModel<String> produtosModel;
     
     public TelaUsuarioInicial(src.Main mainFrame) {
         this.mainFrame = mainFrame;
-        this.produtosModel = null;
+        this.productPanelContainer = new javax.swing.JScrollPane();
+
         setTitle("Mercado: inicio");
         initComponents();
 
@@ -22,15 +22,15 @@ public class TelaUsuarioInicial extends javax.swing.JFrame {
         listarProdutosDaLoja();
     }
     
-    public void listarProdutosDaLoja(){
-        List<Produto> productList = new ProdutoDAO().getAllProducts();
-        if (productList.isEmpty()) return;
-        
-        produtosModel = new DefaultListModel();
-
-        productList.forEach(p -> produtosModel.addElement(p.getName()));
-        
-        lstProduct.setModel(produtosModel);
+    private void listarProdutosDaLoja() {
+        List<Produto> produtos = new ProdutoDAO().getAllProducts();
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(0, 2));
+        produtos.forEach(p -> {
+            ProductPanel productPanel = new ProductPanel(this.mainFrame.getCurrentUser(), p);
+            panel.add(productPanel);
+        });
+        productPanelContainer.setViewportView(panel);
     }
 
     @SuppressWarnings("unchecked")
@@ -45,12 +45,12 @@ public class TelaUsuarioInicial extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
         txtLoggedUser = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lstProduct = new javax.swing.JList<>();
+        productPanelContainer = new javax.swing.JScrollPane();
 
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(600, 530));
 
         jButton1.setText("meu perfil");
 
@@ -71,8 +71,6 @@ public class TelaUsuarioInicial extends javax.swing.JFrame {
 
         txtLoggedUser.setText("...");
 
-        jScrollPane1.setViewportView(lstProduct);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,23 +79,22 @@ public class TelaUsuarioInicial extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(txtLoggedUser, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addComponent(txtLoggedUser, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(btSair)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btSair))
+                    .addComponent(productPanelContainer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,8 +108,8 @@ public class TelaUsuarioInicial extends javax.swing.JFrame {
                     .addComponent(jButton5)
                     .addComponent(btSair))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                .addComponent(productPanelContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(txtLoggedUser, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -166,8 +163,7 @@ public class TelaUsuarioInicial extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> lstProduct;
+    private javax.swing.JScrollPane productPanelContainer;
     private javax.swing.JLabel txtLoggedUser;
     // End of variables declaration//GEN-END:variables
 

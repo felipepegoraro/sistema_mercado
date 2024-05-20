@@ -3,8 +3,10 @@ package model;
 public class ItemCarrinho {
     private Produto produto;
     private int quantidade;
-
+    private int id;
+    
     public ItemCarrinho(Produto produto, int quantidade) {
+        this.id = produto.getId();
         this.produto = produto;
         this.quantidade = quantidade;
     }
@@ -12,6 +14,14 @@ public class ItemCarrinho {
     @Override
     public String toString() {
         return "[" + quantidade + "]: " + produto.toString();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     public Produto getProduto() {

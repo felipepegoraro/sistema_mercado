@@ -44,6 +44,33 @@ public class ProdutoDAO {
         }
     }
     
+    public Produto getProductbyId(int id){
+        String SQL = "select * from " + tablename + " where id = ?";
+        Produto p = null;
+        try {
+            cmd = con.prepareStatement(SQL);
+            cmd.setInt(1, id);
+            ResultSet rs = cmd.executeQuery();
+            if (rs.next()){
+                p = new Produto(
+                    rs.getInt("id"),
+                    rs.getInt("stock_quantity"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getString("supplier"),
+                    rs.getString("category"),
+                    rs.getFloat("price"),
+                    rs.getFloat("rating"),
+                    Arrays.asList(rs.getString("tags")),
+                    rs.getBytes("image")
+                );
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return p;
+    }
+    
     public List<Produto> getAllProducts(){
         String SQL = "select * from " + tablename;
         List<Produto> list = new ArrayList<>();
@@ -66,7 +93,8 @@ public class ProdutoDAO {
                         rs.getString("category"),
                         rs.getFloat("price"),
                         rs.getFloat("rating"),
-                        tagsList
+                        tagsList,
+                        rs.getBytes("image")
                 )); 
             }
         } catch(SQLException e){

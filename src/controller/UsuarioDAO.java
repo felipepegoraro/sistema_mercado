@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Array;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import model.Usuario;
 
@@ -67,11 +69,19 @@ public class UsuarioDAO {
             cmd.setString(1, email);
             ResultSet rs = cmd.executeQuery();
             if (rs.next()){
+                Array arr = rs.getArray("fav_items");
+                List<Integer> favlist = new ArrayList<>();
+                if (arr != null){
+                    Integer[] favItemsArray = (Integer[])arr.getArray();
+                    favlist.addAll(Arrays.asList(favItemsArray));
+                }
+                    
                 user = new Usuario(
                     rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("email"),
-                    rs.getString("password")
+                    rs.getString("password"),
+                    (ArrayList<Integer>)favlist
                 );
             }
         } catch(SQLException e){
@@ -79,6 +89,20 @@ public class UsuarioDAO {
         }
 
         return user;
+    }
+    
+    public void updateFavList(Usuario user){
+        String SQL = "update " + tablename + " set fav_items = ? where id = " + user.getId();
+        try { 
+            cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            cmd.setArray(1, con.createArrayOf("INTEGER", user.getFavItems().toArray(new Integer[0])));
+            int affectedRows = cmd.executeUpdate();
+            if (affectedRows > 0){
+                System.out.println("ok");
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
     
     public Usuario matchUserLogin(String email, String password){
@@ -91,12 +115,19 @@ public class UsuarioDAO {
             cmd.setString(2, password);
             
             ResultSet rs = cmd.executeQuery();
-            if (rs.next()){
+            if (rs.next()){  
+                Array arr = rs.getArray("fav_items");
+                List<Integer> favlist = new ArrayList<>();
+                if (arr != null){
+                    Integer[] favItemsArray = (Integer[])arr.getArray();
+                    favlist.addAll(Arrays.asList(favItemsArray));
+                }
                 user = new Usuario(
                     rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("email"),
-                    rs.getString("password")
+                    rs.getString("password"),
+                    (ArrayList<Integer>) favlist
                 );
             }
         } catch(SQLException e){
@@ -114,12 +145,20 @@ public class UsuarioDAO {
             cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = cmd.executeQuery();
             while (rs.next()){
+                Array arr = rs.getArray("fav_items");
+                List<Integer> favlist = new ArrayList<>();
+                if (arr != null){
+                    Integer[] favItemsArray = (Integer[])arr.getArray();
+                    favlist.addAll(Arrays.asList(favItemsArray));
+                }
+                
                 users.add(
                     new Usuario(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        (ArrayList<Integer>) favlist
                     )
                 );
             }

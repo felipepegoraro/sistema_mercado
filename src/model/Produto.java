@@ -17,8 +17,12 @@ public class Produto {
     private float rating;
     private List<String> tags;
     private byte[] image;
+    private boolean favorito;
     
-    public Produto(int id, int stockQuantity, String name, String description, String supplier, String category, float price, float rating, List<String> tags) {
+    public Produto(
+            int id, int stockQuantity, String name, String description, String supplier,
+            String category, float price, float rating, List<String> tags, byte[] img
+    ) {
         this.id = id;
         this.stockQuantity = stockQuantity;
         this.name = name;
@@ -28,7 +32,8 @@ public class Produto {
         this.price = price;
         this.rating = rating;
         this.tags = tags;
-        this.image = null;
+        this.image = img;
+        this.favorito = false;
     }
 
     @Override
@@ -110,6 +115,14 @@ public class Produto {
     
     public byte[] getImage() {
         return image;
+    }
+    
+    public boolean isFavorito() {
+        return favorito;
+    }
+
+    public void setFavorito(boolean favorito) {
+        this.favorito = favorito;
     }
 
     public void setImageFromFile(String filePath) {

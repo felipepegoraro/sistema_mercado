@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 import model.Usuario;
 import controller.Conexao;
 import controller.UsuarioDAO;
+import java.util.ArrayList;
 
 public class CadastrarView extends javax.swing.JPanel {
 
@@ -26,7 +27,7 @@ public class CadastrarView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        imgLogo = new javax.swing.JLabel();
         btVoltar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
@@ -41,7 +42,7 @@ public class CadastrarView extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(600, 530));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.25.png"))); // NOI18N
+        imgLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.5.png"))); // NOI18N
 
         btVoltar.setText("voltar");
         btVoltar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -83,11 +84,10 @@ public class CadastrarView extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(80, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(imgLogo)
+                        .addGap(62, 62, 62)
                         .addComponent(btVoltar)
                         .addGap(17, 17, 17))
                     .addGroup(layout.createSequentialGroup()
@@ -118,7 +118,7 @@ public class CadastrarView extends javax.swing.JPanel {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btVoltar)
-                    .addComponent(jLabel1))
+                    .addComponent(imgLogo))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -139,7 +139,7 @@ public class CadastrarView extends javax.swing.JPanel {
                 .addComponent(txtErrorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49)
                 .addComponent(btCadastrarUsuario)
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -204,13 +204,13 @@ public class CadastrarView extends javax.swing.JPanel {
             Usuario newUser = new Usuario(
                 txtName.getText(),
                 txtEmail.getText(),
-                txtSenha.getText()
+                txtSenha.getText(),
+                new ArrayList<>()
             );
             
             UsuarioDAO dao = new UsuarioDAO();
-            int res = dao.insertUser(newUser);
     
-            if (res == 0){
+            if (dao.insertUser(newUser) == 0){
                 for (JTextField textField : textFields)
                     textField.setText("");
                 mainFrame.setCurrentUser(newUser);
@@ -222,7 +222,7 @@ public class CadastrarView extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCadastrarUsuario;
     private javax.swing.JButton btVoltar;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel imgLogo;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

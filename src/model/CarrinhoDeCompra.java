@@ -3,34 +3,60 @@ package model;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import controller.CarrinhoDeCompraDAO;
 
 public class CarrinhoDeCompra {
-    private List<ItemCarrinho> items;
+    private int id;
+    private ArrayList<ItemCarrinho> items;
     private float totalPrice;
     private int quantity;
 
-    public CarrinhoDeCompra(){
-        this.items = new ArrayList<>();
+    public CarrinhoDeCompra(int id){
+        this.id = id;
         this.quantity = 0;
         this.totalPrice = 0.0f;
+        this.items = new ArrayList<>();
     }
     
-    public List<ItemCarrinho> getItems() {
+    public CarrinhoDeCompra(int id, int quantity, float price){
+        this.id = id;
+        this.quantity = quantity;
+        this.totalPrice = price;
+        this.items = new ArrayList<>();
+    }
+    
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+    
+    public ArrayList<ItemCarrinho> getItems() {
         return items;
+    }
+    
+    public void setItems(ArrayList<ItemCarrinho> items){
+        this.items = items;
     }
 
     public void adicionarProduto(Produto produto, int quantidade){
+        CarrinhoDeCompraDAO dao = new CarrinhoDeCompraDAO();
+
         for (ItemCarrinho item : this.items){
             if (item.getProduto().getId() == produto.getId()){
                 item.adicionarQuantidade(quantidade);
                 this.quantity += quantidade;
                 totalPrice = calcularTotal();
+                dao.saveCarrinho(this);
                 return;
             }
         }
         items.add(new ItemCarrinho(produto, quantidade));
         this.quantity += quantidade;
         totalPrice = calcularTotal();
+        dao.saveCarrinho(this);
     }
     
     public void removerProduto(Produto produto){
