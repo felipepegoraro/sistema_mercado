@@ -40,10 +40,12 @@ public class LoginView extends javax.swing.JPanel {
         UsuarioDAO dao = new UsuarioDAO();
         
         // 2. verificar se usuario existe no banco.
+        System.out.println("a.1");
         if (dao.getUserByEmail(email) != null) emailCadastrado = true;
         if (!emailCadastrado) txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
         
         // 3. ver se senha esta correta.
+        System.out.println("a.2");
         Usuario currentUser = dao.matchUserLogin(email, password);
         if (currentUser != null){ // login ok
             mainFrame.setCurrentUser(currentUser);
@@ -62,8 +64,11 @@ public class LoginView extends javax.swing.JPanel {
     }
     
     private void goToInitialPage(){
+        System.out.println("a");
         if (isLoginValid()){
+            System.out.println("b");
             mainFrame.showTelaUsuarioInicial();
+            System.out.println("c");
         }
     }
     

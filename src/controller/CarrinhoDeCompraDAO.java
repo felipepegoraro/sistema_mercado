@@ -16,54 +16,64 @@ public class CarrinhoDeCompraDAO {
         this.con = Conexao.conectar();
     }
     
-    // TODO: refazer essa função, pois há erro quando usuario esta sendo cadastrado, de resto parece ok!
     public void saveCarrinho(CarrinhoDeCompra carrinho) {
-        String selectCarrinhoSQL = "SELECT id FROM " + carrinhoTable + " WHERE usuario_id = ?";
-        String insertCarrinhoSQL = "INSERT INTO " + carrinhoTable + " (id, usuario_id, total_price, quantity) VALUES (?, ?, ?, ?)";
-        String updateCarrinhoSQL = "UPDATE " + carrinhoTable + " SET total_price = ?, quantity = ? WHERE id = ?";
-        String selectItemSQL = "SELECT id FROM " + itemCarrinhoTable + " WHERE carrinho_id = ? AND produto_id = ?";
-        String insertItemCarrinhoSQL = "INSERT INTO " + itemCarrinhoTable + " (carrinho_id, produto_id, quantidade) VALUES (?, ?, ?)";
-        String updateItemCarrinhoSQL = "UPDATE " + itemCarrinhoTable + " SET quantidade = ? WHERE id = ?";
-
+        String checkQuery = "SELECT COUNT(*) FROM " + carrinhoTable + " WHERE id = ?";
+        String updateCarrinhoQuery = "UPDATE " + carrinhoTable + " SET total_price = ?, quantity = ? WHERE id = ?";
+        String insertCarrinhoQuery = "INSERT INTO " + carrinhoTable + " (id, usuario_id, total_price, quantity) VALUES (?, ?, ?, ?)";
+        
+        String checkItemQuery = "SELECT COUNT(*) FROM " + itemCarrinhoTable + " WHERE carrinho_id = ? AND produto_id = ?";
+        String updateItemQuery = "UPDATE " + itemCarrinhoTable + " SET quantidade = ? WHERE carrinho_id = ? AND produto_id = ?";
+        String insertItemQuery = "INSERT INTO " + itemCarrinhoTable + " (carrinho_id, produto_id, quantidade) VALUES (?, ?, ?)";
+                            
         try {
             con.setAutoCommit(false);
+            int userid = carrinho.getId();
 
-            // se o carrinho já existe
-            PreparedStatement cmd = con.prepareStatement(selectCarrinhoSQL);
-            cmd.setInt(1, carrinho.getId());
+            // se o carrinho existe
+            cmd = con.prepareStatement(checkQuery);
+            cmd.setInt(1, userid);
             ResultSet rs = cmd.executeQuery();
+            rs.next();
+            boolean exists = rs.getInt(1) > 0;
 
-            int carrinhoId = carrinho.getId();
-            if (rs.next()) { // existe
-                cmd = con.prepareStatement(updateCarrinhoSQL);
+            if (exists) {
+                // atualizar o carrinho existente
+                cmd = con.prepareStatement(updateCarrinhoQuery);
                 cmd.setFloat(1, carrinho.getTotalPrice());
                 cmd.setInt(2, carrinho.getQuantity());
-                cmd.setInt(3, carrinhoId);
+                cmd.setInt(3, userid);
                 cmd.executeUpdate();
-            } else { // não existe
-                cmd = con.prepareStatement(insertCarrinhoSQL);
-                cmd.setInt(1, carrinhoId);
+            } else {
+                // criar novo carrinho
+                cmd = con.prepareStatement(insertCarrinhoQuery);
+                cmd.setInt(1, carrinho.getId());
                 cmd.setInt(2, carrinho.getId());
                 cmd.setFloat(3, carrinho.getTotalPrice());
                 cmd.setInt(4, carrinho.getQuantity());
                 cmd.executeUpdate();
             }
 
+            // atualizar itens do carrinho
             for (ItemCarrinho item : carrinho.getItems()) {
-                cmd = con.prepareStatement(selectItemSQL);
-                cmd.setInt(1, carrinhoId);
+                // verificar se item existe
+                cmd = con.prepareStatement(checkItemQuery);
+                cmd.setInt(1, userid);
                 cmd.setInt(2, item.getProduto().getId());
-                ResultSet itemRS = cmd.executeQuery();
+                ResultSet itemRs = cmd.executeQuery();
+                itemRs.next();
+                boolean itemExists = itemRs.getInt(1) > 0;
 
-                if (itemRS.next()) { // atualizar quantidade
-                    int itemId = itemRS.getInt(1);
-                    cmd = con.prepareStatement(updateItemCarrinhoSQL);
+                if (itemExists) {
+                    // atualizar o item existente (antes delete
+                    cmd = con.prepareStatement(updateItemQuery);
                     cmd.setInt(1, item.getQuantidade());
-                    cmd.setInt(2, itemId);
+                    cmd.setInt(2, userid);
+                    cmd.setInt(3, item.getProduto().getId());
                     cmd.executeUpdate();
-                } else { // inserir novo registro
-                    cmd = con.prepareStatement(insertItemCarrinhoSQL);
-                    cmd.setInt(1, carrinhoId);
+                } else {
+                    // add novo item em itemcarrinhotable
+                    cmd = con.prepareStatement(insertItemQuery);
+                    cmd.setInt(1, userid);
                     cmd.setInt(2, item.getProduto().getId());
                     cmd.setInt(3, item.getQuantidade());
                     cmd.executeUpdate();
@@ -74,24 +84,28 @@ public class CarrinhoDeCompraDAO {
         } catch (SQLException e) {
             try {
                 con.rollback();
-            } catch (SQLException rollbackException) {
-                rollbackException.printStackTrace();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
             e.printStackTrace();
         } finally {
             try {
-                con.setAutoCommit(true);
-            } catch (SQLException autoCommitException) {
-                autoCommitException.printStackTrace();
+                if (cmd != null) cmd.close();
+                if (con != null) con.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
+
  
     public CarrinhoDeCompra getCarrinhoFromId(int id) {
         String selectCarSQL = "SELECT * FROM " + carrinhoTable + " WHERE usuario_id = ?";
         String selectItemsSQL = "SELECT * FROM " + itemCarrinhoTable + " WHERE carrinho_id = ?";
         CarrinhoDeCompra car = null;
 
+        System.out.println("ok");
+        
         try {
             PreparedStatement cmd = con.prepareStatement(selectCarSQL);
             cmd.setInt(1, id);

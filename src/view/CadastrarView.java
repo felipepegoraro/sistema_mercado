@@ -211,9 +211,9 @@ public class CadastrarView extends javax.swing.JPanel {
             UsuarioDAO dao = new UsuarioDAO();
     
             if (dao.insertUser(newUser) == 0){
+                mainFrame.setCurrentUser(dao.getUserByEmail(txtEmail.getText()));
                 for (JTextField textField : textFields)
                     textField.setText("");
-                mainFrame.setCurrentUser(newUser);
                 mainFrame.showTelaUsuarioInicial();
             }
         }

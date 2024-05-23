@@ -3,6 +3,8 @@ package model;
 import java.util.List;
 import java.util.ArrayList;
 import controller.CarrinhoDeCompraDAO;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Usuario {
     private int id;
@@ -22,14 +24,18 @@ public class Usuario {
         this.favItems = fav;
         
         this.carrinho = new CarrinhoDeCompra(id);
-        CarrinhoDeCompra c = dao.getCarrinhoFromId(id);
-        this.carrinho.setItems(c != null ? c.getItems() : new ArrayList<>());
-        System.out.println(this.carrinho.getItems());
+        
+        // ---
+        ExecutorService exs = Executors.newSingleThreadExecutor();
+        exs.submit(() -> {
+            CarrinhoDeCompra c = dao.getCarrinhoFromId(id);
+            this.carrinho.setItems(c != null ? c.getItems() : new ArrayList<>());
+        });
+        exs.shutdown();
     }
     
     public Usuario(String name, String email, String passwd, ArrayList<Integer> fav){
         CarrinhoDeCompraDAO dao = new CarrinhoDeCompraDAO();
-        
         this.name = name;
         this.email = email;
         this.password = passwd;

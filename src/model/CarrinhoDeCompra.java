@@ -43,20 +43,17 @@ public class CarrinhoDeCompra {
 
     public void adicionarProduto(Produto produto, int quantidade){
         CarrinhoDeCompraDAO dao = new CarrinhoDeCompraDAO();
-
         for (ItemCarrinho item : this.items){
             if (item.getProduto().getId() == produto.getId()){
                 item.adicionarQuantidade(quantidade);
                 this.quantity += quantidade;
                 totalPrice = calcularTotal();
-                dao.saveCarrinho(this);
                 return;
             }
         }
         items.add(new ItemCarrinho(produto, quantidade));
         this.quantity += quantidade;
         totalPrice = calcularTotal();
-        dao.saveCarrinho(this);
     }
     
     public void removerProduto(Produto produto){

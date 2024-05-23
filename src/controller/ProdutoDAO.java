@@ -156,7 +156,7 @@ public class ProdutoDAO {
         produto.setImageFromFile("/home/felipe/Mercado/src/assets/logo.25.png");
         produtoDAO.saveProduto(produto);*/
         
-        produtoDAO.showProductImageById(49);
+        produtoDAO.showProductImageById(1);
         List<Produto> list = produtoDAO.getAllProducts();
         for (Produto p : list){
             System.out.println(p);

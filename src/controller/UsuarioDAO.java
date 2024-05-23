@@ -46,6 +46,7 @@ public class UsuarioDAO {
                     try(ResultSet generatedKeys = insertStmt.getGeneratedKeys()){
                         if (generatedKeys.next()){
                             user.setId(generatedKeys.getInt(1));
+                            System.out.println("current user id: " + user.getId());
                         }
                     }
                     System.out.println("usuario inserido com sucesso!");
@@ -75,7 +76,7 @@ public class UsuarioDAO {
                     Integer[] favItemsArray = (Integer[])arr.getArray();
                     favlist.addAll(Arrays.asList(favItemsArray));
                 }
-                    
+                 
                 user = new Usuario(
                     rs.getInt("id"),
                     rs.getString("name"),

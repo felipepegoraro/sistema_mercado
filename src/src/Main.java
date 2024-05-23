@@ -38,9 +38,9 @@ public class Main extends JFrame /*implements ActionListener*/ {
         frame = this;
         frame.getContentPane().removeAll();
         frame.dispose();
-        frame = new view.TelaUsuarioInicial(this);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        JFrame newFrame = new view.TelaUsuarioInicial(this);
+        newFrame.setLocationRelativeTo(null);
+        newFrame.setVisible(true);
     }
     
     public void showLoginView() {

@@ -5,6 +5,7 @@ import model.Usuario;
 import model.ItemCarrinho;
 import model.CarrinhoDeCompra;
 import controller.UsuarioDAO;
+import controller.CarrinhoDeCompraDAO;
 
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
@@ -140,6 +141,8 @@ public class ProductPanel extends javax.swing.JPanel {
 
     private void btAddCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddCartActionPerformed
         this.user.getCarrinho().adicionarProduto(this.produto, Integer.parseInt(cbQuantidade.getSelectedItem().toString()));
+        CarrinhoDeCompraDAO dao = new CarrinhoDeCompraDAO();
+        dao.saveCarrinho(this.user.getCarrinho());
         System.out.println(this.user.getCarrinho());
     }//GEN-LAST:event_btAddCartActionPerformed
 
