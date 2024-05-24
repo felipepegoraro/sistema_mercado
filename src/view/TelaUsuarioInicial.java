@@ -58,6 +58,11 @@ public class TelaUsuarioInicial extends JFrame {
         });
 
         bt4carrinho.setText("carrinho");
+        bt4carrinho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt4carrinhoActionPerformed(evt);
+            }
+        });
 
         bt5compras.setText("minhas compras");
 
@@ -155,6 +160,12 @@ public class TelaUsuarioInicial extends JFrame {
         defaultPanel.setViewportView(new FavoritosView(mainFrame.getCurrentUser()));
         bt3fav.setEnabled(false);
     }//GEN-LAST:event_bt3favActionPerformed
+
+    private void bt4carrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt4carrinhoActionPerformed
+        updateAllButton();
+        defaultPanel.setViewportView(new CarrinhoUserView(mainFrame.getCurrentUser()));
+        bt4carrinho.setEnabled(false);
+    }//GEN-LAST:event_bt4carrinhoActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

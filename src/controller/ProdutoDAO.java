@@ -142,7 +142,7 @@ public class ProdutoDAO {
         }
     }
     
-        public List<Produto> getFavoriteItemsListFromUser(Usuario user){
+    public List<Produto> getFavoriteItemsListFromUser(Usuario user){
         String SQL = "select * from " + tablename;
         List<Produto> list = new ArrayList();
         

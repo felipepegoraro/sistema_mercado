@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.GridLayout;
 
 public class FavoritosView extends javax.swing.JPanel {
+    // alterar para JList ou JTable.
     public FavoritosView(Usuario user) {
         initComponents();
         

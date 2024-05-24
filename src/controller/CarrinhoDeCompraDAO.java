@@ -1,10 +1,10 @@
 package controller;
 
 import java.sql.*;
-import model.CarrinhoDeCompra;
-import model.ItemCarrinho;
-import model.Produto;
+import model.*;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class CarrinhoDeCompraDAO {
     private Connection con;
@@ -97,19 +97,19 @@ public class CarrinhoDeCompraDAO {
             }
         }
     }
-
- 
+    
     public CarrinhoDeCompra getCarrinhoFromId(int id) {
-        String selectCarSQL = "SELECT * FROM " + carrinhoTable + " WHERE usuario_id = ?";
-        String selectItemsSQL = "SELECT * FROM " + itemCarrinhoTable + " WHERE carrinho_id = ?";
+        String selectSQL = "SELECT c.*, ic.produto_id, ic.quantidade " +
+                           "FROM " + carrinhoTable + " c " +
+                           "JOIN " + itemCarrinhoTable + " ic ON c.id = ic.carrinho_id " +
+                           "WHERE c.usuario_id = ?";
         CarrinhoDeCompra car = null;
 
-        System.out.println("ok");
-        
         try {
-            PreparedStatement cmd = con.prepareStatement(selectCarSQL);
+            PreparedStatement cmd = con.prepareStatement(selectSQL);
             cmd.setInt(1, id);
             ResultSet rs = cmd.executeQuery();
+
             if (rs.next()) {
                 car = new CarrinhoDeCompra(
                     id,
@@ -117,16 +117,13 @@ public class CarrinhoDeCompraDAO {
                     rs.getFloat("total_price")
                 );
 
-                PreparedStatement itemsCmd = con.prepareStatement(selectItemsSQL);
-                itemsCmd.setInt(1, id);
-                ResultSet itemsRs = itemsCmd.executeQuery();
                 ProdutoDAO prodDAO = new ProdutoDAO();
-                while (itemsRs.next()) {
-                    int productId = itemsRs.getInt("produto_id");
-                    int quantity = itemsRs.getInt("quantidade");
+                do {
+                    int productId = rs.getInt("produto_id");
+                    int quantity = rs.getInt("quantidade");
                     Produto produto = prodDAO.getProductbyId(productId);
                     car.adicionarProduto(produto, quantity);
-                }
+                } while (rs.next());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,6 +131,7 @@ public class CarrinhoDeCompraDAO {
 
         return car;
     }
+
     
     public static void main(String[] args) {
         CarrinhoDeCompraDAO carrinhoDAO = new CarrinhoDeCompraDAO();

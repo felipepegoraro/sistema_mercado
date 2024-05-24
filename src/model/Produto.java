@@ -19,6 +19,10 @@ public class Produto {
     private byte[] image;
     private boolean favorito;
     
+    public Produto(int id){
+        this.id = id;
+    }
+    
     public Produto(
             int id, int stockQuantity, String name, String description, String supplier,
             String category, float price, float rating, List<String> tags, byte[] img
@@ -38,7 +42,7 @@ public class Produto {
 
     @Override
     public String toString() {
-        return "Produto(" + id + ") -> " + name + "[" + price + "]";
+        return "(" + id + ")->" + name + "[" + price + "]";
     }
     
     public int getId() {
