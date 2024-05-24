@@ -1,26 +1,27 @@
-public class sql {
-}
+package javasql;
 
-/*
+public class sql {
+    private static String fullSQL = 
+    """
 create table if not exists tb_mercado_usuarios (
-	id serial primary key,
-	name varchar(255) not null,
-	email varchar(255) not null,
-	password varchar(255) not null,
-	fav_items integer[]
+    id serial primary key,
+    name varchar(255) not null,
+    email varchar(255) not null,
+    password varchar(255) not null,
+    fav_items integer[]
 );
 
 create table if not exists tb_mercado_produtos (
-	id serial primary key,
-	stock_quantity int not null,
-	name varchar(255) not null,
-	description varchar(255) not null,
-	supplier varchar(255) not null,
-	category varchar(255) not null,
-	price float not null,
-	rating float not null,
-	tags text[] not null,
-	image bytea
+    id serial primary key,
+    stock_quantity int not null,
+    name varchar(255) not null,
+    description varchar(255) not null,
+    supplier varchar(255) not null,
+    category varchar(255) not null,
+    price float not null,
+    rating float not null,
+    tags text[] not null,
+    image bytea
 );
 
 create table if not exists tb_mercado_carrinho (
@@ -37,6 +38,8 @@ create table if not exists tb_mercado_item_carrinho (
     quantidade int not null
 );
 
+    
+-- para testes -------------------------------
 --drop table tb_mercado_usuarios cascade;
 --drop table tb_mercado_produtos cascade;
 --drop table tb_mercado_carrinho cascade;
@@ -54,4 +57,9 @@ insert into tb_mercado_produtos (stock_quantity, name, description, supplier, ca
 (110, 'Produto 8', 'Descrição do Produto 8', 'Fornecedor B', 'Categoria Y', 25.99, 4.3, '{"tag4", "tag6"}', pg_read_binary_file('/home/felipe/Mercado/src/assets/default.25.png.png')),
 (130, 'Produto 9', 'Descrição do Produto 9', 'Fornecedor C', 'Categoria Z', 19.49, 4.2, '{"tag5", "tag3"}', pg_read_binary_file('/home/felipe/Mercado/src/assets/default.25.png.png')),
 (70, 'Produto 10', 'Descrição do Produto 10', 'Fornecedor A', 'Categoria X', 44.99, 4.9, '{"tag2", "tag1"}', pg_read_binary_file('/home/felipe/Mercado/src/assets/default.25.png.png'));
-*/
+""";
+    
+    public static void main(String[] args) {
+        System.out.println(fullSQL);
+    }
+}

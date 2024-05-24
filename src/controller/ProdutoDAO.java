@@ -7,6 +7,7 @@ import java.awt.*; // para o Font
 import java.util.Arrays;
 import javax.swing.*;
 import model.Produto;
+import model.Usuario;
 
 public class ProdutoDAO {
     private Connection con;
@@ -140,6 +141,38 @@ public class ProdutoDAO {
             e.printStackTrace();
         }
     }
+    
+        public List<Produto> getFavoriteItemsListFromUser(Usuario user){
+        String SQL = "select * from " + tablename;
+        List<Produto> list = new ArrayList();
+        
+        try {
+            cmd = con.prepareStatement(SQL);
+            ResultSet rs = cmd.executeQuery();
+            
+            while (rs.next()){
+                if (user.getFavItems().contains(rs.getInt("id"))){
+                    list.add(new model.Produto(
+                            rs.getInt("id"),
+                            rs.getInt("stock_quantity"),
+                            rs.getString("name"),
+                            rs.getString("description"),
+                            rs.getString("supplier"),
+                            rs.getString("category"),
+                            rs.getFloat("price"),
+                            rs.getFloat("rating"),
+                            null,
+                            rs.getBytes("image")
+                    ));
+                }
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return list;
+    }
+
     
     // TESTE!  
     public static void main(String[] args) {

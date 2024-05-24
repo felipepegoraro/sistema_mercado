@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import model.Usuario;
+import model.Produto;
 
 public class UsuarioDAO {
     private Connection con;
@@ -105,7 +106,7 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
     }
-    
+       
     public Usuario matchUserLogin(String email, String password){
         String SQL = "select * from " + tablename + " where email = ? and password = ?";
         Usuario user = null;
