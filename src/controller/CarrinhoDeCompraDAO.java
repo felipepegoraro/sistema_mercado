@@ -98,6 +98,36 @@ public class CarrinhoDeCompraDAO {
         }
     }
     
+    public void removeItemFromCarrinho(int carrinhoId, int produtoId) {
+        String deleteItemQuery = "DELETE FROM " + itemCarrinhoTable + " WHERE carrinho_id = ? AND produto_id = ?";
+        try {
+            con.setAutoCommit(false);
+
+            // deletar item do carrinho
+            cmd = con.prepareStatement(deleteItemQuery);
+            cmd.setInt(1, carrinhoId);
+            cmd.setInt(2, produtoId);
+            cmd.executeUpdate();
+
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cmd != null) cmd.close();
+                if (con != null) con.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    
     public CarrinhoDeCompra getCarrinhoFromId(int id) {
         String selectSQL = "SELECT c.*, ic.produto_id, ic.quantidade " +
                            "FROM " + carrinhoTable + " c " +

@@ -56,11 +56,16 @@ public class CarrinhoUserView extends javax.swing.JPanel {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Produto produto = new Produto(id);
+
+                        System.out.println(car.getItems());
                         car.removerProduto(produto);
+                        System.out.println(car.getItems());
+
                         model.removeRow(x);
                         adicionarBotoesRemove();
-                        car_dao.saveCarrinho(car); // TODO: nao esta salvando no banco de dados
-                                                   // tem algum erro aqui
+
+                        car_dao = new CarrinhoDeCompraDAO();
+                        car_dao.removeItemFromCarrinho(car.getId(), produto.getId());
                     }
                 });
 

@@ -27,7 +27,7 @@ public class UsuarioDAO {
     {
         // sucesso: 0, erro: 1, ja_existe: 2
         String checkSQL = "select count(*) from " + tablename + " where email = ?";
-        String insertSQL = "insert into " + tablename + "(name, email, password) values (?, ?, ?)";
+        String insertSQL = "insert into " + tablename + "(name, email, password) values (?, ?, MD5(?))";
 
         try (PreparedStatement checkStmt = con.prepareStatement(checkSQL)){
             checkStmt.setString(1, user.getEmail());
@@ -108,7 +108,7 @@ public class UsuarioDAO {
     }
        
     public Usuario matchUserLogin(String email, String password){
-        String SQL = "select * from " + tablename + " where email = ? and password = ?";
+        String SQL = "select * from " + tablename + " where email = ? and password = MD5(?)";
         Usuario user = null;
        
         try {
