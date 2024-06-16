@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 public class BuscarProduto extends javax.swing.JPanel {
-    private Usuario maybeUnusedUser;
+    private User maybeUnusedUser;
     
-    public BuscarProduto(Usuario u) {
+    public BuscarProduto(User u) {
         initComponents();
         
         this.maybeUnusedUser = u;

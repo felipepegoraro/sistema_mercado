@@ -5,7 +5,7 @@ import controller.ProdutoDAO;
 import java.awt.GridLayout;
 import model.Produto;
 import javax.swing.*;
-import model.Usuario;
+import model.User;
 
 public class TelaUsuarioInicial extends JFrame {
     private static src.Main mainFrame;
@@ -18,7 +18,7 @@ public class TelaUsuarioInicial extends JFrame {
         setTitle("Mercado: inicio");
         initComponents();
 
-        Usuario u = mainFrame.getCurrentUser();
+        User u = mainFrame.getCurrentUser();
         txtLoggedUser.setText(u != null ? "("+u.getId()+"):"+u.getName() : "error");
 
         defaultPanel.requestFocusInWindow();
@@ -126,12 +126,13 @@ public class TelaUsuarioInicial extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bt1perfil)
-                    .addComponent(bt3fav)
-                    .addComponent(bt4carrinho)
-                    .addComponent(bt5compras)
-                    .addComponent(bthome))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(bt1perfil)
+                        .addComponent(bt3fav)
+                        .addComponent(bt4carrinho)
+                        .addComponent(bt5compras))
+                    .addComponent(bthome, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(defaultPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -139,7 +140,7 @@ public class TelaUsuarioInicial extends JFrame {
                     .addComponent(txtLoggedUser, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bt6sair)
                     .addComponent(jButton1))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();

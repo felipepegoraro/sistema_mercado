@@ -1,6 +1,6 @@
 package view;
 
-import model.Usuario;
+import model.User;
 import model.Produto;
 import controller.ProdutoDAO;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.awt.GridLayout;
 
 public class FavoritosView extends javax.swing.JPanel {
     // alterar para JList ou JTable.
-    public FavoritosView(Usuario user) {
+    public FavoritosView(User user) {
         initComponents();
         
         ProdutoDAO dao = new ProdutoDAO();

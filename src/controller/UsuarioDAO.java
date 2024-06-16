@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import model.Usuario;
+import model.User;
 import model.Produto;
 
 public class UsuarioDAO {
@@ -23,11 +23,11 @@ public class UsuarioDAO {
     }
     
     // TODO    
-    public int insertUser(Usuario user)
+    public int insertUser(User user)
     {
         // sucesso: 0, erro: 1, ja_existe: 2
         String checkSQL = "select count(*) from " + tablename + " where email = ?";
-        String insertSQL = "insert into " + tablename + "(name, email, password) values (?, ?, MD5(?))";
+        String insertSQL = "insert into " + tablename + "(name, email, password, is_admin) values (?, ?, MD5(?), ?)";
 
         try (PreparedStatement checkStmt = con.prepareStatement(checkSQL)){
             checkStmt.setString(1, user.getEmail());
@@ -41,6 +41,7 @@ public class UsuarioDAO {
                 insertStmt.setString(1, user.getName());
                 insertStmt.setString(2, user.getEmail());
                 insertStmt.setString(3, user.getPassword());
+                insertStmt.setBoolean(4, user.isAdmin());
                 
                 int affectedRows = insertStmt.executeUpdate();
                 if (affectedRows > 0){
@@ -62,9 +63,9 @@ public class UsuarioDAO {
         }
     }
     
-    public Usuario getUserByEmail(String email){
+    public User getUserByEmail(String email){
         String SQL = "select * from " + tablename + " where email = ?";
-        Usuario user = null;
+        User user = null;
        
         try {
             cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
@@ -78,12 +79,13 @@ public class UsuarioDAO {
                     favlist.addAll(Arrays.asList(favItemsArray));
                 }
                  
-                user = new Usuario(
+                user = new User(
                     rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("password"),
-                    (ArrayList<Integer>)favlist
+                    (ArrayList<Integer>)favlist,
+                    rs.getBoolean("is_admin")
                 );
             }
         } catch(SQLException e){
@@ -93,7 +95,7 @@ public class UsuarioDAO {
         return user;
     }
     
-    public void updateFavList(Usuario user){
+    public void updateFavList(User user){
         String SQL = "update " + tablename + " set fav_items = ? where id = " + user.getId();
         try { 
             cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
@@ -107,9 +109,9 @@ public class UsuarioDAO {
         }
     }
        
-    public Usuario matchUserLogin(String email, String password){
+    public User matchUserLogin(String email, String password){
         String SQL = "select * from " + tablename + " where email = ? and password = MD5(?)";
-        Usuario user = null;
+        User user = null;
        
         try {
             cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
@@ -124,12 +126,14 @@ public class UsuarioDAO {
                     Integer[] favItemsArray = (Integer[])arr.getArray();
                     favlist.addAll(Arrays.asList(favItemsArray));
                 }
-                user = new Usuario(
+                
+                user = new User(
                     rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("password"),
-                    (ArrayList<Integer>) favlist
+                    (ArrayList<Integer>) favlist,
+                    rs.getBoolean("is_admin")
                 );
             }
         } catch(SQLException e){
@@ -139,8 +143,8 @@ public class UsuarioDAO {
         return user;
     }
     
-    public List<Usuario> getAllUsers(){
-        List users = new ArrayList<Usuario>();
+    public List<User> getAllUsers(){
+        List users = new ArrayList<User>();
         String SQL = "select * from " + tablename + " order by id";
         
         try {
@@ -154,13 +158,13 @@ public class UsuarioDAO {
                     favlist.addAll(Arrays.asList(favItemsArray));
                 }
                 
-                users.add(
-                    new Usuario(
+                users.add(new User(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        (ArrayList<Integer>) favlist
+                        (ArrayList<Integer>) favlist,
+                        rs.getBoolean("is_admin")
                     )
                 );
             }
@@ -172,7 +176,7 @@ public class UsuarioDAO {
     }
     
     // TODO
-    public boolean removeUser(Usuario user){
+    public boolean removeUser(User user){
         return true;
     }
     

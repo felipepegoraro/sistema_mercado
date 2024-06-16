@@ -11,9 +11,9 @@ import controller.*;
 public class CarrinhoUserView extends javax.swing.JPanel {
     private CarrinhoDeCompra car;
     private CarrinhoDeCompraDAO car_dao;
-    private Usuario u;
+    private User u;
 
-    public CarrinhoUserView(Usuario u) {
+    public CarrinhoUserView(User u) {
         this.u = u;
         initComponents();
         fillTableWithUserCar();
@@ -30,9 +30,19 @@ public class CarrinhoUserView extends javax.swing.JPanel {
         
         if (car != null){
             car.getItems().forEach((i) -> {
-                model.addRow(new Object[]{i.getId(), i.getProduto().getName(), i.getQuantidade()});
+                model.addRow(new Object[]{
+                    i.getId(), i.getProduto().getName(), i.getQuantidade(),
+                    i.getProduto().getPrice(),
+                    i.getProduto().getPrice() * i.getQuantidade()
+                });
             });
         }
+        
+        updateTotalPriceString();
+    }
+    
+    private void updateTotalPriceString(){
+        txtTotalPrice.setText("R$ " + Float.toString(car.getTotalPrice()));
     }
     
     private void adicionarBotoesRemove() {
@@ -66,6 +76,7 @@ public class CarrinhoUserView extends javax.swing.JPanel {
 
                         car_dao = new CarrinhoDeCompraDAO();
                         car_dao.removeItemFromCarrinho(car.getId(), produto.getId());
+                        updateTotalPriceString();
                     }
                 });
 
@@ -83,17 +94,18 @@ public class CarrinhoUserView extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbCarrinho = new javax.swing.JTable();
         removePanel = new javax.swing.JPanel();
+        txtTotalPrice = new javax.swing.JLabel();
 
         jtbCarrinho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "id", "name", "quantity"
+                "id", "name", "quantity", "unit price", "total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -102,7 +114,7 @@ public class CarrinhoUserView extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jtbCarrinho);
         if (jtbCarrinho.getColumnModel().getColumnCount() > 0) {
-            jtbCarrinho.getColumnModel().getColumn(0).setPreferredWidth(10);
+            jtbCarrinho.getColumnModel().getColumn(0).setPreferredWidth(1);
         }
 
         javax.swing.GroupLayout removePanelLayout = new javax.swing.GroupLayout(removePanel);
@@ -122,21 +134,26 @@ public class CarrinhoUserView extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(removePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTotalPrice)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(removePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addComponent(removePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtTotalPrice)
+                .addGap(8, 8, 8))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -144,5 +161,6 @@ public class CarrinhoUserView extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtbCarrinho;
     private javax.swing.JPanel removePanel;
+    private javax.swing.JLabel txtTotalPrice;
     // End of variables declaration//GEN-END:variables
 }

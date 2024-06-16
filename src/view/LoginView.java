@@ -3,7 +3,7 @@ package view;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
-import model.Usuario;
+import model.User;
 import controller.UsuarioDAO;
 
 public class LoginView extends javax.swing.JPanel {
@@ -18,7 +18,7 @@ public class LoginView extends javax.swing.JPanel {
         initComponents();
     }
     
-    private boolean isLoginValid(){
+    private int isLoginValid(){
         // 1. login vazio
         boolean isEmpty = false;
         JTextField f[] = {txtEmail, txtPassword};
@@ -31,7 +31,7 @@ public class LoginView extends javax.swing.JPanel {
         
         if (isEmpty){
             txtLoginErrorMsg.setText("preencha todos os campos.");
-            return false;
+            return 1; // login vazio
         }
         
         String email = txtEmail.getText();
@@ -40,16 +40,14 @@ public class LoginView extends javax.swing.JPanel {
         UsuarioDAO dao = new UsuarioDAO();
         
         // 2. verificar se usuario existe no banco.
-        System.out.println("a.1");
         if (dao.getUserByEmail(email) != null) emailCadastrado = true;
         if (!emailCadastrado) txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
         
         // 3. ver se senha esta correta.
-        System.out.println("a.2");
-        Usuario currentUser = dao.matchUserLogin(email, password);
+        User currentUser = dao.matchUserLogin(email, password);
         if (currentUser != null){ // login ok
             mainFrame.setCurrentUser(currentUser);
-            return true;
+            return !currentUser.isAdmin() ? 2 : 3;
         }
         else {
             txtLoginErrorMsg.setText( 
@@ -59,16 +57,15 @@ public class LoginView extends javax.swing.JPanel {
             );
             
             if (emailCadastrado) txtPassword.setBorder(BorderFactory.createLineBorder(Color.RED));
-            return false;
+            return 1;
         }   
     }
     
     private void goToInitialPage(){
-        System.out.println("a");
-        if (isLoginValid()){
-            System.out.println("b");
-            mainFrame.showTelaUsuarioInicial();
-            System.out.println("c");
+        switch(isLoginValid()){
+            case 1: {System.out.println("erro"); break;}
+            case 2: {mainFrame.showTelaUsuarioInicial(); break;}
+            case 3: {mainFrame.showTelaAdminInicial(); break;}
         }
     }
     
@@ -169,7 +166,7 @@ public class LoginView extends javax.swing.JPanel {
 
     private void jLabel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseReleased
         mainFrame.oldPanel = this;
-        mainFrame.changePanel(new CadastrarView(mainFrame));
+        mainFrame.changePanel(new CadastrarUsuarioView(mainFrame));
     }//GEN-LAST:event_jLabel1MouseReleased
 
     private void btLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLoginActionPerformed

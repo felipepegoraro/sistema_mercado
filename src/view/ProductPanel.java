@@ -1,7 +1,7 @@
 package view;
 
 import model.Produto;
-import model.Usuario;
+import model.User;
 import model.ItemCarrinho;
 import model.CarrinhoDeCompra;
 import controller.UsuarioDAO;
@@ -13,9 +13,9 @@ import javax.swing.JComboBox;
 
 public class ProductPanel extends javax.swing.JPanel {
     Produto produto;
-    Usuario user;
+    User user;
     
-    public ProductPanel(Usuario u, Produto p) {
+    public ProductPanel(User u, Produto p) {
         this.user = u;
         this.produto = p;
         byte[] img;

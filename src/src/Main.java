@@ -2,15 +2,14 @@ package src;
 
 import java.awt.BorderLayout;
 import javax.swing.*;
-import model.Usuario;
+import model.User;
 //import java.awt.*;
 //import java.awt.event.*;
-
 public class Main extends JFrame /*implements ActionListener*/ {
     public JPanel currentPanel;
     public JPanel oldPanel = null;
     public JFrame frame = null;
-    private Usuario currentUser = null;
+    private User currentUser = null;
     
     // o painel inicial será o de *Login*
     private void configureInitialPanel(){
@@ -41,6 +40,17 @@ public class Main extends JFrame /*implements ActionListener*/ {
         JFrame newFrame = new view.TelaUsuarioInicial(this);
         newFrame.setLocationRelativeTo(null);
         newFrame.setVisible(true);
+        System.out.println(currentUser);
+    }
+    
+    public void showTelaAdminInicial() {
+        frame = this;
+        frame.getContentPane().removeAll();
+        frame.dispose();
+        JFrame newFrame = new view.TelaAdminInicial(currentUser);
+        newFrame.setLocationRelativeTo(null);
+        newFrame.setVisible(true);
+        System.out.println(currentUser);
     }
     
     public void showLoginView() {
@@ -51,10 +61,10 @@ public class Main extends JFrame /*implements ActionListener*/ {
         frame.setVisible(true);
     }
 
-    public void setCurrentUser(Usuario user){
+    public void setCurrentUser(User user){
         this.currentUser = user;
     }
-    public Usuario getCurrentUser(){
+    public User getCurrentUser(){
         return this.currentUser;
     }
     

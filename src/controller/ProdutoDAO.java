@@ -7,7 +7,7 @@ import java.awt.*; // para o Font
 import java.util.Arrays;
 import javax.swing.*;
 import model.Produto;
-import model.Usuario;
+import model.User;
 
 public class ProdutoDAO {
     private Connection con;
@@ -142,7 +142,7 @@ public class ProdutoDAO {
         }
     }
     
-    public List<Produto> getFavoriteItemsListFromUser(Usuario user){
+    public List<Produto> getFavoriteItemsListFromUser(User user){
         String SQL = "select * from " + tablename;
         List<Produto> list = new ArrayList();
         

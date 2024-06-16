@@ -3,16 +3,17 @@ package view;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
-import model.Usuario;
+import model.User;
+import model.Person;
 import controller.Conexao;
 import controller.UsuarioDAO;
 import java.util.ArrayList;
 
-public class CadastrarView extends javax.swing.JPanel {
+public class CadastrarUsuarioView extends javax.swing.JPanel {
 
     private src.Main mainFrame;
 
-    public CadastrarView(src.Main main) {
+    public CadastrarUsuarioView(src.Main main) {
         this.mainFrame = main;
 
         setSize(600, 530);
@@ -178,7 +179,7 @@ public class CadastrarView extends javax.swing.JPanel {
         
         // 3. verificar se usuario existe baseado no email!
         UsuarioDAO dao = new UsuarioDAO();
-        Usuario u = dao.getUserByEmail(txtEmail.getText());
+        User u = dao.getUserByEmail(txtEmail.getText());
         if (u != null){
             // usuario com email ja existe.
             txtErrorLabel.setText("usuario ja existe.");
@@ -201,7 +202,7 @@ public class CadastrarView extends javax.swing.JPanel {
     private void btCadastrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarUsuarioActionPerformed
         JTextField[] textFields = {txtName, txtEmail, txtSenha, txtConfirmarSenha};
         if (isValidSignIn()){
-            Usuario newUser = new Usuario(
+            User newUser = new User(
                 txtName.getText(),
                 txtEmail.getText(),
                 txtSenha.getText(),
@@ -214,6 +215,7 @@ public class CadastrarView extends javax.swing.JPanel {
                 mainFrame.setCurrentUser(dao.getUserByEmail(txtEmail.getText()));
                 for (JTextField textField : textFields)
                     textField.setText("");
+                
                 mainFrame.showTelaUsuarioInicial();
             }
         }
