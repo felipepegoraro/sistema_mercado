@@ -114,7 +114,11 @@ public class CarrinhoUserView extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jtbCarrinho);
         if (jtbCarrinho.getColumnModel().getColumnCount() > 0) {
-            jtbCarrinho.getColumnModel().getColumn(0).setPreferredWidth(1);
+            jtbCarrinho.getColumnModel().getColumn(0).setPreferredWidth(2);
+            jtbCarrinho.getColumnModel().getColumn(1).setPreferredWidth(7);
+            jtbCarrinho.getColumnModel().getColumn(2).setPreferredWidth(3);
+            jtbCarrinho.getColumnModel().getColumn(3).setPreferredWidth(7);
+            jtbCarrinho.getColumnModel().getColumn(4).setPreferredWidth(8);
         }
 
         javax.swing.GroupLayout removePanelLayout = new javax.swing.GroupLayout(removePanel);

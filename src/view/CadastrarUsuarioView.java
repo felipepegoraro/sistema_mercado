@@ -4,8 +4,6 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import model.User;
-import model.Person;
-import controller.Conexao;
 import controller.UsuarioDAO;
 import java.util.ArrayList;
 

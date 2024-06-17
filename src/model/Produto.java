@@ -8,10 +8,8 @@ import java.io.IOException;
 
 public class Produto {
     private int id; // id sera utilizado como codigo de barras.
-    private int stockQuantity;
     private String name;
     private String description;
-    private String supplier;
     private String category;
     private float price;
     private float rating;
@@ -24,14 +22,12 @@ public class Produto {
     }
     
     public Produto(
-            int id, int stockQuantity, String name, String description, String supplier,
-            String category, float price, float rating, List<String> tags, byte[] img
+        int id, String name, String description,
+        String category, float price, float rating, List<String> tags, byte[] img
     ) {
         this.id = id;
-        this.stockQuantity = stockQuantity;
         this.name = name;
         this.description = description;
-        this.supplier = supplier;
         this.category = category;
         this.price = price;
         this.rating = rating;
@@ -53,14 +49,6 @@ public class Produto {
         this.id = id;
     }
 
-    public int getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
     public String getName() {
         return name;
     }
@@ -75,14 +63,6 @@ public class Produto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(String supplier) {
-        this.supplier = supplier;
     }
 
     public String getCategory() {

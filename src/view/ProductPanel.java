@@ -6,10 +6,6 @@ import model.ItemCarrinho;
 import model.CarrinhoDeCompra;
 import controller.UsuarioDAO;
 import controller.CarrinhoDeCompraDAO;
-import java.awt.Dimension;
-
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
 
 public class ProductPanel extends javax.swing.JPanel {
     Produto produto;
@@ -24,7 +20,6 @@ public class ProductPanel extends javax.swing.JPanel {
         txtPname.setText(p.getName());
         txtPprice.setText("R$ " + String.valueOf(p.getPrice()));
         txtPstars.setText(String.valueOf(p.getRating()));
-        txtPsupplier.setText(p.getSupplier());
         txtDesc.setText(p.getDescription());
         
         if ((img = p.getImage()) != null){
@@ -41,7 +36,6 @@ public class ProductPanel extends javax.swing.JPanel {
 
         imgImageLabel = new javax.swing.JLabel();
         txtPname = new javax.swing.JLabel();
-        txtPsupplier = new javax.swing.JLabel();
         btAddCart = new javax.swing.JButton();
         txtPprice = new javax.swing.JLabel();
         txtPstars = new javax.swing.JLabel();
@@ -56,8 +50,6 @@ public class ProductPanel extends javax.swing.JPanel {
 
         txtPname.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
         txtPname.setText("name");
-
-        txtPsupplier.setText("supplier");
 
         btAddCart.setText("add");
         btAddCart.addActionListener(new java.awt.event.ActionListener() {
@@ -93,8 +85,7 @@ public class ProductPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtPname)
-                            .addComponent(txtPprice)
-                            .addComponent(txtPsupplier)))
+                            .addComponent(txtPprice)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,13 +104,11 @@ public class ProductPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtPname)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPprice)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtPsupplier))
+                        .addComponent(txtPprice))
                     .addComponent(imgImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -177,6 +166,5 @@ public class ProductPanel extends javax.swing.JPanel {
     private javax.swing.JLabel txtPname;
     private javax.swing.JLabel txtPprice;
     private javax.swing.JLabel txtPstars;
-    private javax.swing.JLabel txtPsupplier;
     // End of variables declaration//GEN-END:variables
 }

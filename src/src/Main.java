@@ -3,9 +3,15 @@ package src;
 import java.awt.BorderLayout;
 import javax.swing.*;
 import model.User;
-//import java.awt.*;
-//import java.awt.event.*;
-public class Main extends JFrame /*implements ActionListener*/ {
+
+/*
+    Codigo feito para prova de Programaçao orientada a objetos.
+    Primeiro projeto usando Java + Swing + PostgreeSQL.
+    Todos requisitos foram cumpridos. Porém vou continuar o projeto.
+    Sendo assim, ainda tem muita coisa pra ser feita.
+*/
+
+public class Main extends JFrame {
     public JPanel currentPanel;
     public JPanel oldPanel = null;
     public JFrame frame = null;
@@ -47,7 +53,7 @@ public class Main extends JFrame /*implements ActionListener*/ {
         frame = this;
         frame.getContentPane().removeAll();
         frame.dispose();
-        JFrame newFrame = new view.TelaAdminInicial(currentUser);
+        JFrame newFrame = new view.TelaAdminInicial(this);
         newFrame.setLocationRelativeTo(null);
         newFrame.setVisible(true);
         System.out.println(currentUser);

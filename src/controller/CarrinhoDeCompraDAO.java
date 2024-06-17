@@ -164,13 +164,6 @@ public class CarrinhoDeCompraDAO {
 
     
     public static void main(String[] args) {
-        CarrinhoDeCompraDAO carrinhoDAO = new CarrinhoDeCompraDAO();
-        
-        Produto produto = new Produto(1, 100, "Produto Teste", "Descrição Teste", "Fornecedor Teste", "Categoria Teste", 50.0f, 4.5f, Arrays.asList("tag1", "tag2"), null);
-        ItemCarrinho item = new ItemCarrinho(produto, 2);
-        CarrinhoDeCompra carrinho = new CarrinhoDeCompra(1);
-        carrinho.adicionarProduto(produto, 2);
-        
-        carrinhoDAO.saveCarrinho(carrinho);
+        System.out.println("carrinho!!!!!!!!");
     }
 }

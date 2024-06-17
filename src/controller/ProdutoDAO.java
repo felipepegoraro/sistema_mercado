@@ -21,22 +21,20 @@ public class ProdutoDAO {
     public void saveProduto(Produto produto) {
         String SQL 
                 = "INSERT INTO " + tablename 
-                + " (id, stock_quantity, name, description, supplier, category, price, rating, tags, image) " 
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + " (id, name, description, category, price, rating, tags, image) " 
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 
             cmd.setInt(1, produto.getId());
-            cmd.setInt(2, produto.getStockQuantity());
-            cmd.setString(3, produto.getName());
-            cmd.setString(4, produto.getDescription());
-            cmd.setString(5, produto.getSupplier());
-            cmd.setString(6, produto.getCategory());
-            cmd.setFloat(7, produto.getPrice());
-            cmd.setFloat(8, produto.getRating());
-            cmd.setArray(9, con.createArrayOf("text", produto.getTags().toArray()));
-            cmd.setBytes(10, produto.getImage());
+            cmd.setString(2, produto.getName());
+            cmd.setString(3, produto.getDescription());
+            cmd.setString(4, produto.getCategory());
+            cmd.setFloat(5, produto.getPrice());
+            cmd.setFloat(6, produto.getRating());
+            cmd.setArray(7, con.createArrayOf("text", produto.getTags().toArray()));
+            cmd.setBytes(8, produto.getImage());
 
             cmd.executeUpdate();
 
@@ -55,10 +53,8 @@ public class ProdutoDAO {
             if (rs.next()){
                 p = new Produto(
                     rs.getInt("id"),
-                    rs.getInt("stock_quantity"),
                     rs.getString("name"),
                     rs.getString("description"),
-                    rs.getString("supplier"),
                     rs.getString("category"),
                     rs.getFloat("price"),
                     rs.getFloat("rating"),
@@ -87,15 +83,13 @@ public class ProdutoDAO {
                 
                 list.add(new Produto(
                     rs.getInt("id"),
-                    rs.getInt("stock_quantity"),
                     rs.getString("name"),
                     rs.getString("description"),
-                        rs.getString("supplier"),
-                        rs.getString("category"),
-                        rs.getFloat("price"),
-                        rs.getFloat("rating"),
-                        tagsList,
-                        rs.getBytes("image")
+                    rs.getString("category"),
+                    rs.getFloat("price"),
+                    rs.getFloat("rating"),
+                    tagsList,
+                    rs.getBytes("image")
                 )); 
             }
         } catch(SQLException e){
@@ -153,16 +147,14 @@ public class ProdutoDAO {
             while (rs.next()){
                 if (user.getFavItems().contains(rs.getInt("id"))){
                     list.add(new model.Produto(
-                            rs.getInt("id"),
-                            rs.getInt("stock_quantity"),
-                            rs.getString("name"),
-                            rs.getString("description"),
-                            rs.getString("supplier"),
-                            rs.getString("category"),
-                            rs.getFloat("price"),
-                            rs.getFloat("rating"),
-                            null,
-                            rs.getBytes("image")
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("category"),
+                        rs.getFloat("price"),
+                        rs.getFloat("rating"),
+                        null,
+                        rs.getBytes("image")
                     ));
                 }
             }
