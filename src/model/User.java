@@ -9,12 +9,14 @@ import java.util.concurrent.Executors;
 public class User extends Person {
     private CarrinhoDeCompra carrinho;
     private ArrayList<Integer> favItems;
+    private Carteira carteira;
     
-    public User(int id, String name, String email, String passwd, ArrayList<Integer> fav, boolean isAdmin){
+    public User(int id, String name, String email, String passwd, ArrayList<Integer> fav, boolean isAdmin, Carteira wll){
         super(id, name, email, passwd, isAdmin);
 
         this.favItems = fav;
         this.carrinho = new CarrinhoDeCompra(id);
+        this.carteira = wll;
 
         CarrinhoDeCompraDAO dao = new CarrinhoDeCompraDAO();        
         
@@ -26,14 +28,17 @@ public class User extends Person {
         exs.shutdown();
     }
     
-    public User(String name, String email, String passwd, ArrayList<Integer> fav){
+    public User(String name, String email, String passwd){
         super(name, email, passwd);
         super.setAdmin(false);
 
-        this.favItems = fav;
+        this.favItems = new ArrayList<>();
+        this.carteira = new Carteira(100, 100, 100, 100); // valor inicial teste
+        
         this.carrinho = new CarrinhoDeCompra(getId());
         this.carrinho.setItems(carrinho.getItems() != null ? carrinho.getItems() : new ArrayList<>());
         System.out.println(this.carrinho.getItems());
+        // TODO inicializar carteira
     }
     
     public CarrinhoDeCompra getCarrinho(){
@@ -50,6 +55,10 @@ public class User extends Person {
     
     public ArrayList<Integer> getFavItems(){
         return this.favItems;
+    }
+
+    public Carteira getCarteira() {
+        return carteira;
     }
     
     @Override

@@ -7,7 +7,13 @@ import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import model.*;
 import controller.*;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+        
 public class CarrinhoUserView extends javax.swing.JPanel {
     private CarrinhoDeCompra car;
     private CarrinhoDeCompraDAO car_dao;
@@ -32,8 +38,8 @@ public class CarrinhoUserView extends javax.swing.JPanel {
             car.getItems().forEach((i) -> {
                 model.addRow(new Object[]{
                     i.getId(), i.getProduto().getName(), i.getQuantidade(),
-                    i.getProduto().getPrice(),
-                    i.getProduto().getPrice() * i.getQuantidade()
+                    "R$ " + i.getProduto().getPrice(),
+                    "R$ " + i.getProduto().getPrice() * i.getQuantidade()
                 });
             });
         }
@@ -95,6 +101,7 @@ public class CarrinhoUserView extends javax.swing.JPanel {
         jtbCarrinho = new javax.swing.JTable();
         removePanel = new javax.swing.JPanel();
         txtTotalPrice = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jtbCarrinho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -105,7 +112,7 @@ public class CarrinhoUserView extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -132,24 +139,35 @@ public class CarrinhoUserView extends javax.swing.JPanel {
             .addGap(0, 121, Short.MAX_VALUE)
         );
 
+        jButton1.setText("Finalizar Compra");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTotalPrice)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtTotalPrice)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(removePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addGap(13, 13, 13)
                 .addComponent(removePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(226, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -161,7 +179,23 @@ public class CarrinhoUserView extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // finalizar compra, exemplo no debito
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        
+        Compra c = new Compra(u, car.getTotalPrice(), dateFormat.format(new Date()), "debito");
+        try {
+            System.out.println(u.getCarteira());
+            c.finalizaCompra();
+            System.out.println(u.getCarteira());
+//          salvarCarteira();
+        } catch (ParseException ex) {
+            Logger.getLogger(CarrinhoUserView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtbCarrinho;
     private javax.swing.JPanel removePanel;

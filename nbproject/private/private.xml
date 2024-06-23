@@ -4,23 +4,32 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/felipe/Mercado/src/controller/CarrinhoDeCompraDAO.java</file>
+            <file>file:/home/felipe/Mercado/src/view/BuscarProduto.java</file>
+            <file>file:/home/felipe/Mercado/src/model/User.java</file>
+            <file>file:/home/felipe/Mercado/src/model/Produto.java</file>
+            <file>file:/home/felipe/Mercado/src/view/CadastrarUsuarioView.java</file>
+            <file>file:/home/felipe/Mercado/src/view/HistoricoVendasView.java</file>
+            <file>file:/home/felipe/Mercado/src/model/ItemCarrinho.java</file>
+            <file>file:/home/felipe/Mercado/src/view/CarrinhoUserView.java</file>
+            <file>file:/home/felipe/Mercado/src/model/Compra.java</file>
+            <file>file:/home/felipe/Mercado/src/view/UsuarioPerfil.java</file>
+            <file>file:/home/felipe/Mercado/src/controller/CompraDAO.java</file>
+            <file>file:/home/felipe/Mercado/src/model/Person.java</file>
             <file>file:/home/felipe/Mercado/src/view/LoginView.java</file>
             <file>file:/home/felipe/Mercado/src/view/GerenciarUsuariosView.java</file>
+            <file>file:/home/felipe/Mercado/src/controller/Conexao.java</file>
             <file>file:/home/felipe/Mercado/src/controller/script.sql</file>
             <file>file:/home/felipe/Mercado/src/view/GerenciarProdutosView.java</file>
-            <file>file:/home/felipe/Mercado/src/model/User.java</file>
             <file>file:/home/felipe/Mercado/src/src/Main.java</file>
-            <file>file:/home/felipe/Mercado/src/model/Produto.java</file>
             <file>file:/home/felipe/Mercado/src/view/FavoritosView.java</file>
             <file>file:/home/felipe/Mercado/src/controller/UsuarioDAO.java</file>
-            <file>file:/home/felipe/Mercado/src/view/CadastrarUsuarioView.java</file>
             <file>file:/home/felipe/Mercado/src/controller/ProdutoDAO.java</file>
-            <file>file:/home/felipe/Mercado/src/view/HistoricoVendasView.java</file>
-            <file>file:/home/felipe/Mercado/src/view/CarrinhoUserView.java</file>
             <file>file:/home/felipe/Mercado/src/view/ProductPanel.java</file>
-            <file>file:/home/felipe/Mercado/src/view/UsuarioPerfil.java</file>
+            <file>file:/home/felipe/Mercado/src/model/CarrinhoDeCompra.java</file>
             <file>file:/home/felipe/Mercado/src/view/TelaAdminInicial.java</file>
+            <file>file:/home/felipe/Mercado/src/model/Admin.java</file>
             <file>file:/home/felipe/Mercado/src/view/TelaUsuarioInicial.java</file>
+            <file>file:/home/felipe/Mercado/src/model/Carteira.java</file>
         </group>
     </open-files>
 </project-private>

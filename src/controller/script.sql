@@ -53,12 +53,25 @@ insert into tb_mercado_usuarios (name, email, password, is_admin) values
 create table tb_mercado_historico_compras (
     id serial primary key,
     usuario_id int references tb_mercado_usuarios(id) on delete cascade not null,
-    p1reco_total float not null,
-    data_compra date not null
+    preco_total float not null,
+    data_compra date not null,
+    tipo_pagamento varchar(64) not null
 );
 
+
+-- nao usado --------------
 create table tb_mercado_estoque (
     id serial primary key,
     produto_id int references tb_mercado_produtos(id) on delete cascade not null,
     quantidade int not null
+);
+-- -------------------------
+
+create table tb_mercado_carteira_usuarios (
+    id serial primary key,
+    usuario_id int references tb_mercado_usuarios(id) on delete cascade not null,
+    debito float not null,
+    credito float not null,
+    dinheiro float not null,
+    limite float not null
 );

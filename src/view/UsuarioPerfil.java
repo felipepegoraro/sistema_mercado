@@ -30,7 +30,7 @@ public class UsuarioPerfil extends javax.swing.JPanel {
 
         jToggleButton2.setText("historico");
 
-        jButton2.setText("simular depoisto");
+        jButton2.setText("simular deposito");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

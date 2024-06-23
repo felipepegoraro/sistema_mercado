@@ -203,8 +203,7 @@ public class CadastrarUsuarioView extends javax.swing.JPanel {
             User newUser = new User(
                 txtName.getText(),
                 txtEmail.getText(),
-                txtSenha.getText(),
-                new ArrayList<>()
+                txtSenha.getText()
             );
             
             UsuarioDAO dao = new UsuarioDAO();
