@@ -1,9 +1,34 @@
 package view;
 
+import controller.CompraDAO;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import model.Compra;
+
 public class HistoricoVendasView extends javax.swing.JPanel {
 
     public HistoricoVendasView() {
         initComponents();
+        fillTable();
+    }
+    
+    private void fillTable(){
+        CompraDAO d = new CompraDAO();
+        ArrayList<Compra> compras =  d.listarTodasCompras();
+        
+        DefaultTableModel model = (DefaultTableModel) tableHistory.getModel();
+        model.setRowCount(0);
+        
+        // preencher a tabela pegando os valores
+        compras.forEach(compra -> {
+           model.addRow(new Object[] { 
+                compra.getId(),
+                compra.getUser().getName(),
+                compra.getTotalPrice(),
+                compra.getPurchaseDate(),
+                compra.getType()
+            });
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -21,11 +46,11 @@ public class HistoricoVendasView extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Usuário", "Preço", "Data"
+                "ID", "Usuário", "Preço", "Data", "Tipo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {

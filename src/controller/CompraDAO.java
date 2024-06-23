@@ -19,11 +19,12 @@ public class CompraDAO {
         this.con = Conexao.conectar();
     }
     
-    public void registrarCompra(model.Compra compra) throws ParseException{
+    public void registrarCompra(model.Compra compra) throws ParseException {
         String SQL = "insert into " + TABLENAME
                 + " (usuario_id, preco_total, data_compra, tipo_pagamento)"
                 + " values (?, ?, ?, ?)";
         
+        // TODO: formatacao da DATA nao ta funcionando
         DateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
 
         if (compra != null){
@@ -31,12 +32,22 @@ public class CompraDAO {
                 Date utilDate = dt.parse(compra.getPurchaseDate());
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
                 
+                int user_id = compra.getUser().getId();
+                float total = compra.getTotalPrice();
+                String tipo = compra.getType();
+                
                 cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                cmd.setInt(1, compra.getUser().getId());
-                cmd.setFloat(2, compra.getTotalPrice());
+                cmd.setInt(1, user_id);
+                cmd.setFloat(2, total);
                 cmd.setDate(3, sqlDate);
-                cmd.setString(4, compra.getType());
+                cmd.setString(4, tipo);
                 cmd.executeUpdate();
+                
+                CarteiraDAO d = new CarteiraDAO();
+                
+                Carteira carteira = d.getCarteiraByUserId(user_id);
+                carteira.pagar(total, tipo);
+                d.updateCarteira(carteira, user_id);
 
             } catch (SQLException e){
                 e.printStackTrace();
@@ -60,8 +71,8 @@ public class CompraDAO {
                 String tipoPagamento = rs.getString("tipo_pagamento");
 
                 UsuarioDAO userdao = new UsuarioDAO();
-                User u = userdao.getUserById(usuarioId);
-                Compra compra = new Compra(u, precoTotal, dataCompra.toString(), tipoPagamento);
+                User u = userdao.getUserByGenericField("id", usuarioId);
+                Compra compra = new Compra(id, u, precoTotal, dataCompra.toString(), tipoPagamento);
                 compras.add(compra);
             }
 
@@ -71,5 +82,4 @@ public class CompraDAO {
 
         return compras;
     }
-
 }

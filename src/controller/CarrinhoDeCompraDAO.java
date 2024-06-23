@@ -162,6 +162,37 @@ public class CarrinhoDeCompraDAO {
         return car;
     }
 
+    public void limparCarrinhoDoBanco(CarrinhoDeCompra carrinho) {
+        String deleteItemsQuery = "DELETE FROM " + itemCarrinhoTable + " WHERE carrinho_id = ?";
+        
+        carrinho.limparCarrinho();
+        
+        try {
+            con.setAutoCommit(false);
+
+            // deletar todos os itens do carrinho
+            cmd = con.prepareStatement(deleteItemsQuery);
+            cmd.setInt(1, carrinho.getId());
+            cmd.executeUpdate();
+
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cmd != null) cmd.close();
+                if (con != null) con.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     
     public static void main(String[] args) {
         System.out.println("carrinho!!!!!!!!");

@@ -177,7 +177,9 @@ public class CadastrarUsuarioView extends javax.swing.JPanel {
         
         // 3. verificar se usuario existe baseado no email!
         UsuarioDAO dao = new UsuarioDAO();
-        User u = dao.getUserByEmail(txtEmail.getText());
+        System.out.println("bosta 1");
+        User u = dao.getUserByGenericField("email", txtEmail.getText());
+        System.out.println("bosta 2");
         if (u != null){
             // usuario com email ja existe.
             txtErrorLabel.setText("usuario ja existe.");
@@ -209,7 +211,7 @@ public class CadastrarUsuarioView extends javax.swing.JPanel {
             UsuarioDAO dao = new UsuarioDAO();
     
             if (dao.insertUser(newUser) == 0){
-                mainFrame.setCurrentUser(dao.getUserByEmail(txtEmail.getText()));
+                mainFrame.setCurrentUser(dao.getUserByGenericField("email", txtEmail.getText()));
                 for (JTextField textField : textFields)
                     textField.setText("");
                 

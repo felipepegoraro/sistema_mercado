@@ -96,6 +96,12 @@ public class CarrinhoDeCompra {
         }
     }
     
+    public void limparCarrinho(){
+        this.items.clear();
+        this.quantity = 0;
+        this.totalPrice = 0.0f;
+    }
+    
     public float calcularTotal() {
         return (float) items.stream()
             .mapToDouble(item -> item.getProduto().getPrice() * item.getQuantidade())

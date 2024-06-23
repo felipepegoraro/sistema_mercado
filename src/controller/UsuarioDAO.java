@@ -24,6 +24,32 @@ public class UsuarioDAO {
         this.con = Conexao.conectar();
     }
     
+    private List<Integer> getFavItems(ResultSet rs) throws SQLException {
+        Array arr = rs.getArray("fav_items");
+        List<Integer> favlist = new ArrayList<>();
+        if (arr != null){
+            Integer[] favItemsArray = (Integer[])arr.getArray();
+            favlist.addAll(Arrays.asList(favItemsArray));
+        }
+        return favlist;
+    }
+    
+    private User extractUser(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        
+        CarteiraDAO d = new CarteiraDAO();
+        
+        return new User(
+            id,
+            rs.getString("name"),
+            rs.getString("email"),
+            rs.getString("password"),
+            (ArrayList<Integer>) getFavItems(rs),
+            rs.getBoolean("is_admin"),
+            d.getCarteiraByUserId(id)
+        );
+    }
+    
     // TODO    
     public int insertUser(User user) {
         String checkSQL = "SELECT COUNT(*) FROM " + TABLENAME + " WHERE email = ?";
@@ -89,94 +115,34 @@ public class UsuarioDAO {
     }
 
     
-    private Carteira getUserCarteira(int user_id) {
-        String SQL = "SELECT * FROM " + WALLET_TABLENAME + " WHERE usuario_id = ?";
-        Carteira carteira = null;
-
+    
+    
+    // antes era 2 fn getUserByEmail e (...)byId
+    public User getUserByGenericField(String field, Object value){
+        String SQL = "SELECT * FROM " + TABLENAME + " WHERE " + field + " = ?";
+        User user = null;
+        
         try {
             cmd = con.prepareStatement(SQL);
-            cmd.setInt(1, user_id);
+            
+            if (value instanceof Integer id){
+                cmd.setInt(1, id);
+            }
+            else if (value instanceof String str){
+                cmd.setString(1, str);
+            } else {
+                throw new IllegalArgumentException("Tipo nao suportado de campo.");
+            }
+            
             ResultSet rs = cmd.executeQuery();
             if (rs.next()) {
-                float debito = rs.getFloat("debito");
-                float credito = rs.getFloat("credito");
-                float dinheiro = rs.getFloat("dinheiro");
-                float limite = rs.getFloat("limite");
-
-                carteira = new Carteira(debito, credito, dinheiro, limite);
+                user = extractUser(rs);
             }
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return carteira;
-    }
-
-    
-    public User getUserByEmail(String email){
-        String SQL = "select * from " + TABLENAME + " where email = ?";
-        User user = null;
-       
-        try {
-            cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            cmd.setString(1, email);
-            ResultSet rs = cmd.executeQuery();
-            if (rs.next()){
-                Array arr = rs.getArray("fav_items");
-                List<Integer> favlist = new ArrayList<>();
-                if (arr != null){
-                    Integer[] favItemsArray = (Integer[])arr.getArray();
-                    favlist.addAll(Arrays.asList(favItemsArray));
-                }
-                 
-                user = new User(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("password"),
-                    (ArrayList<Integer>)favlist,
-                    rs.getBoolean("is_admin"),
-                    getUserCarteira(rs.getInt("id"))
-                );
-            }
-        } catch(SQLException e){
-            e.printStackTrace();
-        }
-
-        return user;
-    }
-    
-    
-    public User getUserById(int id){
-        String SQL = "select * from " + TABLENAME + " where id = ?";
-        User user = null;
-       
-        try {
-            cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            cmd.setInt(1, id);
-            ResultSet rs = cmd.executeQuery();
-            if (rs.next()){
-                Array arr = rs.getArray("fav_items");
-                List<Integer> favlist = new ArrayList<>();
-                if (arr != null){
-                    Integer[] favItemsArray = (Integer[])arr.getArray();
-                    favlist.addAll(Arrays.asList(favItemsArray));
-                }
-                 
-                user = new User(
-                    id,
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("password"),
-                    (ArrayList<Integer>)favlist,
-                    rs.getBoolean("is_admin"),
-                    getUserCarteira(id)    
-                );
-            }
-        } catch(SQLException e){
-            e.printStackTrace();
-        }
-
+        
         return user;
     }
     
@@ -205,22 +171,7 @@ public class UsuarioDAO {
             
             ResultSet rs = cmd.executeQuery();
             if (rs.next()){  
-                Array arr = rs.getArray("fav_items");
-                List<Integer> favlist = new ArrayList<>();
-                if (arr != null){
-                    Integer[] favItemsArray = (Integer[])arr.getArray();
-                    favlist.addAll(Arrays.asList(favItemsArray));
-                }
-                
-                user = new User(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("password"),
-                    (ArrayList<Integer>) favlist,
-                    rs.getBoolean("is_admin"),
-                    getUserCarteira(rs.getInt("id"))
-                );
+                user = extractUser(rs);
             }
         } catch(SQLException e){
             e.printStackTrace();
@@ -237,23 +188,7 @@ public class UsuarioDAO {
             cmd = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = cmd.executeQuery();
             while (rs.next()){
-                Array arr = rs.getArray("fav_items");
-                List<Integer> favlist = new ArrayList<>();
-                if (arr != null){
-                    Integer[] favItemsArray = (Integer[])arr.getArray();
-                    favlist.addAll(Arrays.asList(favItemsArray));
-                }
-                
-                users.add(new User(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("password"),
-                        (ArrayList<Integer>) favlist,
-                        rs.getBoolean("is_admin"),
-                        getUserCarteira(rs.getInt("id"))
-                    )
-                );
+                users.add(extractUser(rs));
             }
         } catch(SQLException e){
             e.printStackTrace();
@@ -271,7 +206,4 @@ public class UsuarioDAO {
     public boolean removeUserById(int id){
         return true;
     }
-    
-    
-
 }

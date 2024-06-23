@@ -40,7 +40,7 @@ public class LoginView extends javax.swing.JPanel {
         UsuarioDAO dao = new UsuarioDAO();
         
         // 2. verificar se usuario existe no banco.
-        if (dao.getUserByEmail(email) != null) emailCadastrado = true;
+        if (dao.getUserByGenericField("email", email) != null) emailCadastrado = true;
         if (!emailCadastrado) txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
         
         // 3. ver se senha esta correta.
